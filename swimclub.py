@@ -2,6 +2,16 @@ from statistics import mean
 from math import ceil
 FOLDER ="swimdata/"
 def process_swim_data(filename: str)-> dict:
+    """_Return swim data from file_
+Given name of swimmers file , process it and return dictionary of swimmer details with average time taken for a given category
+
+
+    Args:
+        filename (str): _the name of file to be processed_
+
+    Returns:
+        dict: _Swimmers details_
+    """
     centiseconds = []
     user_details ={}
   
