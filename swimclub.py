@@ -1,12 +1,12 @@
 from statistics import mean
 from math import ceil
-def process_swim_data(filename):
+FOLDER ="swimdata/"
+def process_swim_data(filename: str)-> dict:
     centiseconds = []
     user_details ={}
-    FN = filename
-    FOLDER ="swimdata/"
+  
     #Unpack user details from the text file name
-    swimmer_name,age,distance,stroke = FN.strip(".txt").split("-")
+    swimmer_name,age,distance,stroke = filename.removesuffix(".txt").split("-")
     #Store user details in a dictionary
     user_details["name"] = swimmer_name
     user_details["age"] = age
@@ -14,7 +14,7 @@ def process_swim_data(filename):
     user_details["stroke"] = stroke
 
 #Open the file in given folder
-    with open(FOLDER + FN) as file:
+    with open(FOLDER + filename) as file:
         lines = file.readlines()
     #Split the various times to a times list
     times = lines[0].strip().split(",")
@@ -23,14 +23,18 @@ def process_swim_data(filename):
 
 #Convert time to centiseconds
     for time in times:
-        minutes,seconds_hundredths = time.split(":") #Convert time to minutes and seconds_and_hundredths
-        seconds,hundredths = seconds_hundredths.split(".") #Convert seconds_and_hundredths to seconds and hundredths
-        centisecond = (int(minutes) * 60 * 100) + (int(seconds) * 100) + hundredths #convert minutes and seconds to hundredths and add to existing hundredths
+        if ":" in time:
+            minutes,seconds_hundredths = time.split(":") #Convert time to minutes and seconds_and_hundredths
+            seconds,hundredths = seconds_hundredths.split(".") #Convert seconds_and_hundredths to seconds and hundredths
+            centisecond = (int(minutes) * 60 * 100) + (int(seconds) * 100) + int(hundredths) #convert minutes and seconds to hundredths and add to existing hundredths
+        else:
+            seconds,hundredths = time.split(".")
+            centisecond = (int(seconds) * 100) + int(hundredths)
         centiseconds.append(centisecond) #Add converted hundredths to centiseconds list
 #Calculate average
     average = mean(centiseconds)
 #Convert calculated average to time
-    minutes_seconds, hundredths = (ceil(average) / 100).split(".")
+    minutes_seconds, hundredths = str(ceil(average) / 100).split(".")
     minutes = int(minutes_seconds) // 60
     seconds = int(minutes_seconds) - (minutes * 60)
     
@@ -39,3 +43,4 @@ def process_swim_data(filename):
     user_details["average"] = time
     
     return user_details
+
