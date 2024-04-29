@@ -43,6 +43,7 @@ Given name of swimmers file , process it and return dictionary of swimmer detail
         centiseconds.append(centisecond) #Add converted hundredths to centiseconds list
 #Calculate average
     average = mean(centiseconds)
+    user_details["converts"] = centiseconds
 #Convert calculated average to time
     minutes_seconds, hundredths = str(ceil(average) / 100).split(".")
     minutes = int(minutes_seconds) // 60
