@@ -1,6 +1,13 @@
 from flask import Flask,session,render_template,request
 import os
 from swimclub import process_swim_data,FOLDER
+from barchart import draw_bar_chart
+
+
+TEMPLATES_DIR = "./webapp/templates"
+
+if not os.path.exists(TEMPLATES_DIR):
+    os.makedirs(TEMPLATES_DIR)
 app = Flask(__name__)
 app.secret_key ="You'll never guess"
 
@@ -8,7 +15,7 @@ app.secret_key ="You'll never guess"
 def index():
     return render_template(
         "index.html",
-        title = "Welcome to Swim club System",
+        title = "Welcome  Swimclub",
         )
 
 def populate_data():
@@ -31,7 +38,7 @@ def display_swimmers():
         title="Select a Swimmer",
         url="/showfiles",
         select_id="swimmer",
-        names=sorted(session["swimmers"]),
+        data=sorted(session["swimmers"]),
         )
 
 
@@ -44,9 +51,15 @@ def get_swimmers_files():
         title="Select swimmer's file",
         url="/showbarchart",
         select_id="file",
-        names=session["swimmers"][name],
+        data=session["swimmers"][name],
         )
 
+@app.post("/showbarchart")
+def show_bar_chart():
+    file_id= request.form["file"]
+
+    location = draw_bar_chart(file_id,TEMPLATES_DIR)
+    return render_template(location.split("/")[-1])
 
 if __name__ == "__main__":
     app.run(debug = True)
