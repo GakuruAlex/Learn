@@ -1,4 +1,4 @@
-from flask import Flask,session,render_template
+from flask import Flask,session,render_template,request
 import os
 from swimclub import process_swim_data,FOLDER
 app = Flask(__name__)
@@ -24,16 +24,29 @@ def populate_data():
             session["swimmers"][name].append(file)
 
 @app.get("/swimmers")
-def display_swimmers()->list:
+def display_swimmers():
     populate_data()
     return render_template(
         "select.html",
-        names = sorted(session["swimmers"])),
-    
-@app.get("/files/<swimmer>")
-def get_swimmers_files(swimmer):
+        title="Select a Swimmer",
+        url="/showfiles",
+        select_id="swimmer",
+        names=sorted(session["swimmers"]),
+        )
+
+
+@app.post("/showfiles")
+def get_swimmers_files():
     populate_data()
-    return str(session["swimmers"][swimmer])
+    name = request.form["swimmer"]
+    return render_template(
+        "select.html",
+        title="Select swimmer's file",
+        url="/showbarchart",
+        select_id="file",
+        names=session["swimmers"][name],
+        )
+
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug = True)
