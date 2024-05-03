@@ -44,5 +44,5 @@ def draw_bar_chart(filename,location=CHARTS):
     save = os.path.join(location, f"{filename.removesuffix('.txt')}.html")
 
     with open(save, "w") as file_html:
-        file_html.write(page)
+        print(page,file=file_html)
     return os.path.realpath(save)

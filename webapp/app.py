@@ -28,7 +28,7 @@ def populate_data():
           name =process_swim_data(file)["name"]
           if name not in session["swimmers"]:
             session["swimmers"][name] = []
-            session["swimmers"][name].append(file)
+          session["swimmers"][name].append(file)
 
 @app.get("/swimmers")
 def display_swimmers():
