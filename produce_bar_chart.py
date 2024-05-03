@@ -1,9 +1,7 @@
-import os
-import webbrowser
 from swimclub import process_swim_data,FOLDER
 from hfpy_utils import convert2range
 
-def produce_bar_chart(filename):
+def draw_bar_chart(filename,templates ="charts/"):
     swimmer = process_swim_data(filename)
     ranges = []
     name = swimmer["name"] 
