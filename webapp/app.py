@@ -2,12 +2,15 @@ from flask import Flask,session,render_template,request
 import os
 from swimclub import process_swim_data,FOLDER
 from barchart import draw_bar_chart
+from update_records import import_records
+from tqdm import tqdm
 
 
 TEMPLATES_DIR = "./webapp/templates"
 
 if not os.path.exists(TEMPLATES_DIR):
     os.makedirs(TEMPLATES_DIR)
+
 app = Flask(__name__)
 app.secret_key ="You'll never guess"
 
@@ -56,9 +59,13 @@ def get_swimmers_files():
 
 @app.post("/showbarchart")
 def show_bar_chart():
+    for i in tqdm(range(10),desc="Loading World Records...."):
+        import_records()
+
     file_id= request.form["file"]
 
     location = draw_bar_chart(file_id,TEMPLATES_DIR)
+
     return render_template(location.split("/")[-1])
 
 if __name__ == "__main__":
