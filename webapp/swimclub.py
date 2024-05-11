@@ -1,6 +1,8 @@
 from statistics import mean
 from math import ceil
-FOLDER ="swimdata/"
+FOLDER ="./webapp/swimdata/"
+
+
 def process_swim_data(filename: str)-> dict:
     """_Return swim data from file_
 Given name of swimmers file , process it and return dictionary of swimmer details with average time taken for a given category
@@ -54,4 +56,6 @@ Given name of swimmers file , process it and return dictionary of swimmer detail
     user_details["average"] = time
     
     return user_details
+
+
 
